@@ -61,6 +61,5 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo LICENSE para más detal
 
 ## Contacto
 
-Roberto Salazar - [tu-email@dominio.com]
-
+Roberto Salazar Márquez- roberto.salazar@upaep.mx
 Link del proyecto: [https://github.com/[usuario]/sistema-biblioteca](https://github.com/%5Busuario%5D/sistema-biblioteca)
