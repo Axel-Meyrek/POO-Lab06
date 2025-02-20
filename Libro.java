@@ -109,6 +109,7 @@ public class Libro {
                "\nEstado: " + (prestado ? "Prestado" : "Disponible");
     }
 
+    /* MY CHANGES */
     public boolean verificarDisponibilidad() {
         return !prestado;
     }
@@ -132,7 +133,7 @@ public class Libro {
     public void setNewDano (String daño) {
         registroDeDaños.add(daño);
     }
-    
+
     public void setNewMantenimiento (String mantenimiento) {
         mantenimientos.add(mantenimiento);
     }
