@@ -87,7 +87,6 @@ public class Prestamo {
         }
     }
 
-
     public boolean extenderPrestamo(int dias) {
         if (estado == ACTIVO && !LocalDate.now().isAfter(fechaDevolucionEsperada)) {
             fechaDevolucionEsperada = fechaDevolucionEsperada.plusDays(dias);
@@ -121,12 +120,10 @@ public class Prestamo {
                ", Estado=" + estadoStr + "]";
     }
 
-
     public int calcularMulta() {
         int diasRetrasados = -diasRestantesParaDevolucion();
         return (diasRetrasados > 0) ? diasRetrasados * MULTA : 0;
     }
-
 
     public String generarReciboMulta() {
         int diasRetrasados = -diasRestantesParaDevolucion();
@@ -157,4 +154,5 @@ public class Prestamo {
         }
         return "El libro aún no ha sido devuelto.";
     }
+    
 }
