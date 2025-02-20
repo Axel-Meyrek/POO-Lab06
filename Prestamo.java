@@ -10,11 +10,10 @@ public class Prestamo {
     private LocalDate fechaDevolucionReal;
     private int estado;
 
-    /** Constante que representa un préstamo activo */
     public static final int ACTIVO = 0;
-    /** Constante que representa un préstamo devuelto */
+
     public static final int DEVUELTO = 1;
-    /** Constante que representa un préstamo vencido */
+
     public static final int VENCIDO = 2;
 
     private static final int MULTA = 50;
@@ -154,5 +153,5 @@ public class Prestamo {
         }
         return "El libro aún no ha sido devuelto.";
     }
-    
+
 }

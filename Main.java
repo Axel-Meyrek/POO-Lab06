@@ -1,21 +1,4 @@
-/**
- * Clase principal que demuestra el funcionamiento del sistema de biblioteca.
- * Esta clase contiene el método main que inicializa y prueba las diferentes
- * funcionalidades del sistema, incluyendo la creación de libros, usuarios,
- * y la simulación de operaciones de préstamo y devolución.
- * 
- * @author Roberto SALAZAR MARQUEZ
- * @version 1.0
- * @since 2025-01-01
- * 
- * La clase implementa los siguientes casos de prueba:
- * - Creación de una biblioteca con su empleado
- * - Creación y gestión de libros
- * - Registro de usuarios
- * - Proceso de préstamo de libros
- * - Proceso de devolución de libros
- * - Verificación de estados del sistema
- */
+
 public class Main {
     public static void main(String[] args) {
         // Crear una instancia de la biblioteca

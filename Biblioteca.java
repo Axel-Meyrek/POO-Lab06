@@ -1,11 +1,3 @@
-/**
- * Clase que representa una biblioteca y gestiona sus operaciones principales.
- * Esta clase maneja la interacción entre libros, usuarios y empleados bibliotecarios,
- * permitiendo realizar operaciones como préstamos y devoluciones de libros.
- * 
- * @author Roberto SALAZAR MARQUEZ
- * @version 1.0
- */
 
 public class Biblioteca {
     private String nombre;
@@ -88,4 +80,5 @@ public class Biblioteca {
                            (empleadoBibliotecario != null && empleadoBibliotecario.getPrestamoGestionado() != null ? 
                             "Préstamo activo" : "Sin préstamos"));
     }
+    
 }
