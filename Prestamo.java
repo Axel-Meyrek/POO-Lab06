@@ -119,6 +119,7 @@ public class Prestamo {
                ", Estado=" + estadoStr + "]";
     }
 
+    /* MY CHANGES */
     public int calcularMulta() {
         int diasRetrasados = -diasRestantesParaDevolucion();
         return (diasRetrasados > 0) ? diasRetrasados * MULTA : 0;

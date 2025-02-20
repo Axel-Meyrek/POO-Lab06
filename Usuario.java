@@ -60,7 +60,7 @@ public class Usuario extends Persona {
         return cad;
     }
 
-    /* CHANGES */
+    /* MY CHANGES */
     public Vector<String> getGenerosFavoritos() {
         return generosFavoritos;
     }
