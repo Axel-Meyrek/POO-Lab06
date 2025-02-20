@@ -1,11 +1,14 @@
+import java.util.Vector;
 
-public class Libro
-{
+public class Libro {
    private String titulo;
    private String autor;
    private String isbn;
    private int numPaginas;
    private boolean prestado;
+   private String estadoFisico;
+   private Vector <String> mantenimientos;
+   private Vector <String> registroDeDaños;
    
     public Libro() {
         this.titulo = "Sin título";
@@ -108,5 +111,29 @@ public class Libro
 
     public boolean verificarDisponibilidad() {
         return !prestado;
+    }
+
+    public String getEstadoFisico() {
+        return estadoFisico;
+    }
+
+    public void changeEstadoFisico(String estadoFisico) {
+        this.estadoFisico = estadoFisico;
+    }
+
+    public Vector<String> getMantenimiento() {
+        return mantenimientos;
+    }
+
+    public Vector<String> getRegistroDeDaños() {
+        return registroDeDaños;
+    }
+
+    public void setNewDano (String daño) {
+        registroDeDaños.add(daño);
+    }
+    
+    public void setNewMantenimiento (String mantenimiento) {
+        mantenimientos.add(mantenimiento);
     }
 }
