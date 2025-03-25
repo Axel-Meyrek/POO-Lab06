@@ -1,5 +1,5 @@
-
 import java.time.*;
+import java.util.*;
 
 public class Prestamo {
     private String id;
@@ -10,59 +10,65 @@ public class Prestamo {
     private LocalDate fechaDevolucionReal;
     private int estado;
 
+    private static Queue <Prestamo> prestamosPendientes = new LinkedList<>();
+    private static final int MULTA = 50;
+
     public static final int ACTIVO = 0;
-
     public static final int DEVUELTO = 1;
-
     public static final int VENCIDO = 2;
 
-    private static final int MULTA = 50;
-    
-    
     public Prestamo(String id, Usuario usuario, Libro libro) {
-        /** Identificador único del préstamo */
         this.id = id;
         this.usuario = usuario;
         this.libro = libro;
         this.fechaPrestamo = LocalDate.now();
-        this.fechaDevolucionEsperada = fechaPrestamo.plusDays(14); // 14 días de préstamo por defecto
+        this.fechaDevolucionEsperada = fechaPrestamo.plusDays(14);
         this.fechaDevolucionReal = null;
         this.estado = ACTIVO;
+        prestamosPendientes.add(this);
     }
 
-    public String getId() { 
-        return id; 
+    public static Queue<Prestamo> getPrestamosPendientes() {
+        return prestamosPendientes;
     }
 
-    public Usuario getUsuario() { 
-        return new Usuario(usuario); 
+    public static Prestamo procesarSiguientePrestamo() {
+        return prestamosPendientes.poll();
     }
 
-    public Libro getLibro() { 
-        return new Libro(libro); 
-    }
-    
-    public LocalDate getFechaPrestamo() { 
-        return fechaPrestamo; 
+    public String getId() {
+        return id;
     }
 
-    public LocalDate getFechaDevolucionEsperada() { 
-        return fechaDevolucionEsperada; 
+    public Usuario getUsuario() {
+        return new Usuario(usuario);
     }
 
-    public LocalDate getFechaDevolucionReal() { 
-        return fechaDevolucionReal; 
+    public Libro getLibro() {
+        return new Libro(libro);
     }
 
-    public int getEstado() { 
-        return estado; 
+    public LocalDate getFechaPrestamo() {
+        return fechaPrestamo;
+    }
+
+    public LocalDate getFechaDevolucionEsperada() {
+        return fechaDevolucionEsperada;
+    }
+
+    public LocalDate getFechaDevolucionReal() {
+        return fechaDevolucionReal;
+    }
+
+    public int getEstado() {
+        return estado;
     }
 
     public boolean registrarPrestamo() {
-        if (libro.isPrestado() || usuario.getLibrosPrestados() != null) {
-            return false;
-        }
+        if (libro.isPrestado() || usuario.getHistorialPrestamos().contains(this)) return false;
+
         if (usuario.solicitarPrestamo(libro)) {
+            usuario.agregarPrestamo(this);
             estado = ACTIVO;
             return true;
         }
@@ -79,7 +85,7 @@ public class Prestamo {
         }
         return false;
     }
-    
+
     public void verificarEstado() {
         if (estado == ACTIVO && LocalDate.now().isAfter(fechaDevolucionEsperada)) {
             estado = VENCIDO;
@@ -93,33 +99,7 @@ public class Prestamo {
         }
         return false;
     }
-    
-    public String toString() {
-        String estadoStr;
-        switch(estado) {
-            case ACTIVO:
-                estadoStr = "ACTIVO";
-                break;
-            case DEVUELTO:
-                estadoStr = "DEVUELTO";
-                break;
-            case VENCIDO:
-                estadoStr = "VENCIDO";
-                break;
-            default:
-                estadoStr = "DESCONOCIDO";
-        }
-        
-        return "Prestamo [ID=" + id + 
-               ", Usuario=" + usuario.getNombre() +
-               ", Libro=" + libro.getTitulo() +
-               ", Fecha Prestamo=" + fechaPrestamo +
-               ", Fecha Devolución Esperada=" + fechaDevolucionEsperada +
-               ", Fecha Devolución Real=" + (fechaDevolucionReal != null ? fechaDevolucionReal : "No devuelto") +
-               ", Estado=" + estadoStr + "]";
-    }
 
-    /* MY CHANGES */
     public int calcularMulta() {
         int diasRetrasados = -diasRestantesParaDevolucion();
         return (diasRetrasados > 0) ? diasRetrasados * MULTA : 0;
@@ -132,12 +112,12 @@ public class Prestamo {
         }
         int totalPagar = calcularMulta();
         return "---- RECIBO DE MULTA ----\n" +
-               "Libro: " + libro.getTitulo() + "\n" +
-               "Bibliotecario: " + usuario.getNombre() + "\n" +
-               "Fecha esperada de devolución: " + fechaDevolucionEsperada + "\n" +
-               "Días de retraso: " + diasRetrasados + "\n" +
-               "Total a pagar: $" + totalPagar + "\n" +
-               "-------------------------";
+                "Libro: " + libro.getTitulo() + "\n" +
+                "Bibliotecario: " + usuario.getNombre() + "\n" +
+                "Fecha esperada de devolución: " + fechaDevolucionEsperada + "\n" +
+                "Días de retraso: " + diasRetrasados + "\n" +
+                "Total a pagar: $" + totalPagar + "\n" +
+                "-------------------------";
     }
 
     public int diasRestantesParaDevolucion() {
@@ -147,12 +127,37 @@ public class Prestamo {
     public String alertNuevoLibro() {
         if (estado == DEVUELTO && fechaDevolucionReal != null) {
             return "ALERTA: Devolución registrada \n" +
-                   "Libro: " + libro.getTitulo() + "\n" +
-                   "Usuario: " + usuario.getNombre() + "\n" +
-                   "Fecha de devolución: " + fechaDevolucionReal + "\n" +
-                   "-------------------------";
+                    "Libro: " + libro.getTitulo() + "\n" +
+                    "Usuario: " + usuario.getNombre() + "\n" +
+                    "Fecha de devolución: " + fechaDevolucionReal + "\n" +
+                    "-------------------------";
         }
         return "El libro aún no ha sido devuelto.";
     }
 
+    @Override
+    public String toString() {
+        String estadoStr;
+        switch (estado) {
+            case ACTIVO:
+                estadoStr = "ACTIVO";
+                break;
+            case DEVUELTO:
+                estadoStr = "DEVUELTO";
+                break;
+            case VENCIDO:
+                estadoStr = "VENCIDO";
+                break;
+            default:
+                estadoStr = "DESCONOCIDO";
+        }
+
+        return "Prestamo [ID=" + id +
+                ", Usuario=" + usuario.getNombre() +
+                ", Libro=" + libro.getTitulo() +
+                ", Fecha Prestamo=" + fechaPrestamo +
+                ", Fecha Devolución Esperada=" + fechaDevolucionEsperada +
+                ", Fecha Devolución Real=" + (fechaDevolucionReal != null ? fechaDevolucionReal : "No devuelto") +
+                ", Estado=" + estadoStr + "]";
+    }
 }

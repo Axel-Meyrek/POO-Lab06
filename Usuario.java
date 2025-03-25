@@ -1,22 +1,30 @@
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Usuario extends Persona {
     private Libro libroPrestado;
-    private Vector <String> generosFavoritos;
+    private ArrayList <String> generosFavoritos;
     private String preferenciaDeLectura;
     private int librosPrestados;
     private int maxLibrosPrestados;
+    private Set <Prestamo> historialPrestamos;
     
     public Usuario(String nombre, String id) {
         super(nombre, id);
         this.libroPrestado = null;
+        this.generosFavoritos = new ArrayList<>();
+        this.historialPrestamos = new HashSet<>();
         librosPrestados = 0;
+        this.maxLibrosPrestados = 5;
     }
     
     public Usuario(Usuario usuario) {
         super(usuario.getNombre(), usuario.getId());
         this.libroPrestado = usuario.getLibrosPrestados();
         this.librosPrestados = usuario.getNumLibrosPrestados();
+        this.historialPrestamos = usuario.getHistorialPrestamos();
+        this.generosFavoritos = new ArrayList<>(usuario.getGenerosFavoritos());
     }
     
     public boolean solicitarPrestamo(Libro libro) {
@@ -41,7 +49,7 @@ public class Usuario extends Persona {
     }
     
     public Libro getLibrosPrestados() {
-        if(libroPrestado != null)
+        if (libroPrestado != null)
             return new Libro(libroPrestado);
         else
             return null;
@@ -61,11 +69,11 @@ public class Usuario extends Persona {
     }
 
     /* MY CHANGES */
-    public Vector<String> getGenerosFavoritos() {
+    public ArrayList<String> getGenerosFavoritos() {
         return generosFavoritos;
     }
 
-    public void setNewGeneroFavorito (String genero) {
+    public void setNewGeneroFavorito(String genero) {
         generosFavoritos.add(genero);
     }
 
@@ -83,5 +91,13 @@ public class Usuario extends Persona {
 
     public int getMaxLibrosPrestados() {
         return maxLibrosPrestados;
+    }
+
+    public Set<Prestamo> getHistorialPrestamos() {
+        return Set.copyOf(historialPrestamos);
+    }
+
+    public boolean agregarPrestamo(Prestamo prestamo) {
+        return historialPrestamos.add(prestamo);
     }
 }

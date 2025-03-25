@@ -1,50 +1,56 @@
+import java.util.*;
 
 public class Main {
+
+    /* HOLA PROFE BUENAS NOCHES, REALIZE LAS PRUEBAS AQUI, SON LAS CLASES: LIBRO, USUARIO, BIBLIOTECA Y PRESTAMO */
+    /* LO QUIERO PROFE, SOY ISREL */
+    /* Yo tambein lo quiero profesor... soy Axel */
     public static void main(String[] args) {
-        // Crear una instancia de la biblioteca
-        Biblioteca biblioteca = new Biblioteca("Biblioteca Central", "Av. Principal #123");
-        //biblioteca.setEmpleado("José Iturbide", "EMP001", 1000.00, "Bibliotecario",Empleado.MATUTINO);
-        
-        // Crear algunos libros
-        Libro libro1 = new Libro("El Principito", "Antoine de Saint-Exupéry", "978-0156012195", 96);
-        Libro libro2 = new Libro("Don Quijote", "Miguel de Cervantes", "978-8424922498", 863);
-        
-        // Crear usuarios
-        Usuario usuario1 = new Usuario("María López", "U001");
-        Usuario usuario2 = new Usuario("Carlos Ruiz", "U002");
-        
-        // Demostrar el proceso de préstamo
-        System.out.println("=== Iniciando proceso de préstamo ===");
+        // Crear una biblioteca
+        Biblioteca biblioteca = new Biblioteca("Biblioteca Central", "Centro Ciudad");
+
+        // Crear libros usando el constructor adecuado
+        Libro libro1 = new Libro("Java para Todos", "Juan Pérez", "1234567890123", 250);
+        Libro libro2 = new Libro("Programación Avanzada en Java", "Carlos López", "9876543210987", 300);
+
+        // Crear un usuario
+        Usuario usuario1 = new Usuario("Juan Pérez", "U001");
+
+        // Asignar libro y usuario a la biblioteca
         biblioteca.setLibro(libro1);
         biblioteca.setUsuario(usuario1);
-        
-        if (biblioteca.prestarLibro()) {
-            System.out.println("Préstamo realizado con éxito:");
-            System.out.println("Libro: " + libro1.getTitulo());
-            System.out.println("Usuario: " + usuario1.getNombre());
+
+        // Crear empleados y agregarlos a la biblioteca
+        biblioteca.agregarEmpleado("Carlos García", "E001", 3000.0, "Bibliotecario", 1);
+        biblioteca.agregarEmpleado("Ana López", "E002", 2800.0, "Bibliotecario", 2);
+
+        // Mostrar la información inicial de la biblioteca
+        System.out.println(biblioteca);
+        System.out.println();
+
+        // Intentar prestar el libro
+        System.out.println("Intentando prestar el libro...");
+        if (biblioteca.prestarLibro("E001")) {
+            System.out.println("¡Préstamo exitoso!");
         } else {
-            System.out.println("No se pudo realizar el préstamo");
+            System.out.println("No se pudo realizar el préstamo.");
         }
-        
-        // Intentar prestar un libro ya prestado
-        System.out.println("\n=== Intentando prestar libro no disponible ===");
-        biblioteca.setLibro(libro1);
-        biblioteca.setUsuario(usuario2);
-        if (!biblioteca.prestarLibro()) {
-            System.out.println("Préstamo denegado: Libro no disponible");
+        System.out.println();
+
+        // Mostrar el estado después del préstamo
+        System.out.println(biblioteca);
+        System.out.println();
+
+        // Intentar devolver el libro
+        System.out.println("Intentando devolver el libro...");
+        if (biblioteca.devolverLibro("E001")) {
+            System.out.println("¡Devolución exitosa!");
+        } else {
+            System.out.println("No se pudo realizar la devolución.");
         }
-        
-        // Proceso de devolución
-        System.out.println("\n=== Proceso de devolución ===");
-        if (biblioteca.devolverLibro()) {
-            System.out.println("Libro devuelto con éxito:");
-            System.out.println("Libro: " + libro1.getTitulo());
-            System.out.println("Estado: Disponible");
-        }
-        
-        // Mostrar estado final de la biblioteca
-        System.out.println("\n=== Estado de la Biblioteca ===");
-        System.out.println(biblioteca.toString());
+        System.out.println();
+
+        // Mostrar el estado después de la devolución
+        System.out.println(biblioteca);
     }
 }
-

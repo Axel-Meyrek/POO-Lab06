@@ -1,4 +1,4 @@
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class Libro {
    private String titulo;
@@ -7,8 +7,9 @@ public class Libro {
    private int numPaginas;
    private boolean prestado;
    private String estadoFisico;
-   private Vector <String> mantenimientos;
-   private Vector <String> registroDeDaños;
+   private ArrayList <String> mantenimientos;
+   private ArrayList <String> registroDeDaños;
+   private int contadorPrestamos = 0;
    
     public Libro() {
         this.titulo = "Sin título";
@@ -16,6 +17,8 @@ public class Libro {
         this.isbn = "0000000000000";
         this.numPaginas = 0;
         this.prestado = false;
+        this.mantenimientos = new ArrayList<>();
+        this.registroDeDaños = new ArrayList<>();
     }   
     
     public Libro(String titulo, String autor) {
@@ -24,6 +27,8 @@ public class Libro {
         this.isbn = "0000000000000";
         this.numPaginas = 0;
         this.prestado = false;
+        this.mantenimientos = new ArrayList<>();
+        this.registroDeDaños = new ArrayList<>();
     }
 
     public Libro(String titulo, String autor, String isbn, int numPaginas) {
@@ -32,6 +37,8 @@ public class Libro {
         this.isbn = isbn;
         this.numPaginas = numPaginas;
         this.prestado = false;
+        this.mantenimientos = new ArrayList<>();
+        this.registroDeDaños = new ArrayList<>();
     }
 
     public Libro(Libro otroLibro) {
@@ -39,7 +46,9 @@ public class Libro {
         this.autor = otroLibro.autor;
         this.isbn = otroLibro.isbn;
         this.numPaginas = otroLibro.numPaginas;
-        this.prestado = false;  // El nuevo libro siempre inicia como no prestado
+        this.prestado = false;
+        this.mantenimientos = new ArrayList<>(otroLibro.mantenimientos);
+        this.registroDeDaños = new ArrayList<>(otroLibro.registroDeDaños);
     }
 
     public String getTitulo() {
@@ -122,19 +131,27 @@ public class Libro {
         this.estadoFisico = estadoFisico;
     }
 
-    public Vector<String> getMantenimiento() {
+    public ArrayList <String> getMantenimiento() {
         return mantenimientos;
     }
 
-    public Vector<String> getRegistroDeDaños() {
+    public ArrayList <String> getRegistroDeDaños() {
         return registroDeDaños;
     }
 
-    public void setNewDano (String daño) {
+    public void setNewDano(String daño) {
         registroDeDaños.add(daño);
     }
 
-    public void setNewMantenimiento (String mantenimiento) {
+    public void setNewMantenimiento(String mantenimiento) {
         mantenimientos.add(mantenimiento);
+    }
+
+    public void incrementarPrestamos() {
+        contadorPrestamos++;
+    }
+    
+    public int getContadorPrestamos() {
+        return contadorPrestamos;
     }
 }
